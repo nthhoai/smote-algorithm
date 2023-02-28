@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-
+#Hello
 df = pd.read_csv('d:\python\processimbalanceddata\data2\student-mat.csv', sep=";")
 df["school"].replace(["GP", "MS"], [1,0], inplace = True)
 df["sex"].replace(["M", "F"], [0,1], inplace = True)
