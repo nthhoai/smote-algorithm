@@ -7,6 +7,7 @@ import math
 #PHƯƠNG PHÁP LẬP TRÌNH HƯỚNG ĐỐI TƯỢNG
 
 class SMOTE:
+    label_minor_class=0
     class_0 = [] #lưu chỉ số của ptu thuộc lớp minority
     number_0 = 0 #số lượng mẫu thuộc lớp minority
     number_sample = 0 #số lượng mẫu (thiểu số + đa số)
@@ -33,7 +34,7 @@ class SMOTE:
         self.df = pd.read_csv(self.path) 
         self.num_att = self.df.shape[1]
         for i in range (len(self.df)):
-            if self.df['label'][i] == 0:
+            if self.df['label'][i] == label_minor_class:
                 self.class_0.append(i)
                 self.number_0 = self.number_0 + 1
         self.number_sample = len(self.df)         
@@ -117,8 +118,9 @@ class SMOTE:
         '''trong trường hợp tỷ lệ T nhập vào > 100'''
         while self.amount != 0:
             for i in range (len(self.class_0)):
-                point_or = rd.randint(0,(k-1))
-                diff = self.df.iloc[self.class_0[i]] - self.df.iloc[self.index_k[i][point_or][0]] 
+                #point_or = rd.randint(0,(k-1))
+                
+                diff = abs( self.df.iloc[self.class_0[i]] - self.df.iloc[self.index_k[i][point_or][0]] )
                 new_point = self.df.iloc[self.class_0[i]] + diff * round(rd.uniform(0,1), 3)
                 #self.synthetic.append(new_point)
                 self.synthetic.loc[len(self.synthetic)] = new_point
@@ -144,6 +146,17 @@ if __name__ == '__main__':
     print ("Lớp thiểu số sau khi sinh mẫu: ", len(a.synthetic))
     print ("IN MẪU SYNTHETIC: ")
     print (a.synthetic)
+    temp = []
+
+
+#in các mẫu lớp thiểu số ban đầu
+    for i in range (len (a.class_0)):
+        temp.append(a.df.loc[a.class_0[i]])
+
+temp2 = pd.DataFrame(temp)
+print ("Phan tu lop thieu so ban dau: ")
+        
+print (temp2)
 
 
 
